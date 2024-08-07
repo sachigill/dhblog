@@ -60,7 +60,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -103,9 +103,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="../styles.css">
@@ -200,234 +197,89 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div id="ec58b350" class="cell" data-execution_count="86">
+<section id="us-traffic-accident-project-overview" class="level2">
+<h2 class="anchored" data-anchor-id="us-traffic-accident-project-overview">US Traffic Accident Project Overview</h2>
+<p>Traffic accidents are some of the most widely occurring events that happen everywhere across the globe. They take place every single day, and can happen at any time. Traffic accidents have huge impacts on our population as they can lead to injuries, death, as well as economic loss. However for the most part because these events are just a normal daily occurrence, people don’t pay too much attention. Only something like a plane crash may get thorough coverage and analysis. When traffic accidents occur, there usually is not much coverage or in depth research on factors that may play a role or the detection of any patterns or common themes in regards to traffic accidents. Understanding what factors could potentially contribute to traffic accidents can hopefully help to improve traffic safety and create effective preventative policies or plans. My project delves into a comprehensive U.S. traffic accident dataset, revealing insights about accidents, severity, and contributing factors across different locations and time periods. By comparing this data over time and relative to different conditions, I aim to reveal patterns or correlations in the data, to hopefully understand the trends and underlying causes of traffic accidents.</p>
+<p>My main focus for this projects can be seen through my primary research questions:</p>
+<ol type="1">
+<li><p>What is the relationship between weather, location, or time of day on severity or number of accidents? Are there any common themes?</p></li>
+<li><p>How have traffic accidents changed over time, and did events such as Covid-19 have any effect on traffic accidents or severity?</p></li>
+</ol>
+<p>Factors such as weather conditions can have a significant impact on traffic accidents or the severity of such accidents. In looking at the different weather conditions in relation to the severity level of accidents, I aim to identify if there are weather situations that pose more threats to drivers. Looking at if there are any common themes in accidents compared with other locations can help to see if certain places are more prone to accidents than others and overall help in the potential discovery of why. I also think it is important to analyze the progression of these traffic accidents over time to see any broad trends, and whether the start of the Covid-19 pandemic had any effect or led to any unprecedented patterns in traffic accidents.</p>
+</section>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<p>My dataset is from Kaggle regarding US traffic accidents from 2016-2023 that has data obtained from various places like US and State departments of transportation, and law enforcement agencies. I condensed the original dataset down from 500k entries to around 1500 entries as the file was too large for efficient analysis and visualization. This dataset provides a detailed account of traffic accidents in the United States from February 2016 to March 2023, covering 49 states, and includes key factors like the date, time, city, state, county, weather conditions, severity, etc. of each accident. There is also a description of each accident that can offer a qualitative aspect to this project.</p>
+<p>When conducting data analysis I made sure the columns were in the correct date time format so the data could easily be extracted for visualizations requiring time related features or progressions. I also made sure to handle missing values and filter them out when performing my analysis. I used different libraries for analysis, including Pandas, Matplotlib for plotting the visualizations, and the Natural Language Toolkit (nltk) for text analysis, and wordcloud.</p>
+<p>Source of Dataset:<a href="https://www.kaggle.com/datasets/sobhanmoosavi/us-accidents">Traffic Accident Data</a></p>
+<div id="ec58b350" class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="d318cbe5" class="cell" data-execution_count="87">
+<div id="d318cbe5" class="cell" data-execution_count="35">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> pd.read_csv(<span class="st">'https://raw.githubusercontent.com/sachigill/dhfinalproject/main/traffic_accident_data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="dfeeeab3" class="cell" data-execution_count="105">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#traffic_df['date'] = pd.to_datetime(accidents['date'])</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#traffic_df = traffic_df.dropna()</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Descriptive statistics</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#descriptive_stats = traffic_df.describe()</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#print(descriptive_stats)</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#severity = traffic_df['Severity'].describe()</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#temperature = traffic_df['Temperature(F)'].describe()</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#precipitation = traffic_df['Precipitation(in)'].describe()</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#print("Severity Stats:\n", severity)</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#print("Temperature Stats:\n", temperature)</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#print("Precipitation Stats:\n", precipitation)</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_columns'</span>, <span class="va">None</span>)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(traffic_df.head())</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Wind_Speed(mph)'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Wind_Speed(mph)'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Precipitation(in)'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Precipitation(in)'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Temperature(F)'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Temperature(F)'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Humidity(%)'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Humidity(%)'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Visibility(mi)'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Visibility(mi)'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>descriptive_stats <span class="op">=</span> traffic_df[[<span class="st">'Severity'</span>, <span class="st">'Wind_Speed(mph)'</span>, <span class="st">'Precipitation(in)'</span>, <span class="st">'Temperature(F)'</span>, <span class="st">'Humidity(%)'</span>, <span class="st">'Visibility(mi)'</span>]].describe()</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>descriptive_stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>          ID   Source  Severity           Start_Time             End_Time  \
-0  A-2047758  Source2         2  2019-06-12 10:10:56  2019-06-12 10:55:58   
-1  A-4694324  Source1         2  2022-12-03 23:37:14   2022-12-04 1:56:53   
-2  A-5006183  Source1         2  2022-08-20 13:13:00  2022-08-20 15:22:45   
-3  A-4237356  Source1         2  2022-02-21 17:43:04  2022-02-21 19:43:23   
-4  A-6690583  Source1         2   2020-12-04 1:46:00   2020-12-04 4:13:09   
-
-   Start_Lat   Start_Lng    End_Lat     End_Lng  Distance(mi)  \
-0  30.641211  -91.153481        NaN         NaN         0.000   
-1  38.990562  -77.399070  38.990037  -77.398282         0.056   
-2  34.661189 -120.492822  34.661189 -120.492442         0.022   
-3  43.680592  -92.993317  43.680574  -92.972223         1.054   
-4  35.395484 -118.985176  35.395476 -118.985995         0.046   
-
-                                         Description           Street  \
-0  Accident on LA-19 Baker-Zachary Hwy at Lower Z...       Highway 19   
-1  Incident on FOREST RIDGE DR near PEPPERIDGE PL...  Forest Ridge Dr   
-2  Accident on W Central Ave from Floradale Ave t...    Floradale Ave   
-3  Incident on I-90 EB near REST AREA Drive with ...       14th St NW   
-4  RP ADV THEY LOCATED SUSP VEH OF 20002 - 726 CR...       River Blvd   
-
-          City            County State     Zipcode Country    Timezone  \
-0      Zachary  East Baton Rouge    LA  70791-4610      US  US/Central   
-1     Sterling           Loudoun    VA  20164-2813      US  US/Eastern   
-2       Lompoc     Santa Barbara    CA       93436      US  US/Pacific   
-3       Austin             Mower    MN       55912      US  US/Central   
-4  Bakersfield              Kern    CA  93305-2649      US  US/Pacific   
-
-  Airport_Code    Weather_Timestamp  Temperature(F)  Wind_Chill(F)  \
-0         KBTR   2019-06-12 9:53:00            77.0           77.0   
-1         KIAD  2022-12-03 23:52:00            45.0           43.0   
-2         KLPC  2022-08-20 12:56:00            68.0           68.0   
-3         KAUM  2022-02-21 17:35:00            27.0           15.0   
-4         KBFL   2020-12-04 1:54:00            42.0           42.0   
-
-   Humidity(%)  Pressure(in)  Visibility(mi) Wind_Direction  Wind_Speed(mph)  \
-0         62.0         29.92            10.0             NW              5.0   
-1         48.0         29.91            10.0              W              5.0   
-2         73.0         29.79            10.0              W             13.0   
-3         86.0         28.49            10.0            ENE             15.0   
-4         34.0         29.77            10.0           CALM              0.0   
-
-   Precipitation(in) Weather_Condition  Amenity   Bump  Crossing  Give_Way  \
-0                0.0              Fair    False  False     False     False   
-1                0.0              Fair    False  False     False     False   
-2                0.0              Fair    False  False     False     False   
-3                0.0        Wintry Mix    False  False     False     False   
-4                0.0              Fair    False  False     False     False   
-
-   Junction  No_Exit  Railway  Roundabout  Station   Stop  Traffic_Calming  \
-0     False    False    False       False    False  False            False   
-1     False    False    False       False    False  False            False   
-2     False    False    False       False    False  False            False   
-3     False    False    False       False    False  False            False   
-4     False    False    False       False    False  False            False   
-
-   Traffic_Signal  Turning_Loop Sunrise_Sunset Civil_Twilight  \
-0            True         False            Day            Day   
-1           False         False          Night          Night   
-2            True         False            Day            Day   
-3           False         False            Day            Day   
-4           False         False          Night          Night   
-
-  Nautical_Twilight Astronomical_Twilight  
-0               Day                   Day  
-1             Night                 Night  
-2               Day                   Day  
-3               Day                   Day  
-4             Night                 Night  </code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="105">
+<div id="07d0b8d2" class="cell" data-scrolled="true" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Weather_Condition'</span>].value_counts().plot(kind<span class="op">=</span><span class="st">'bar'</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Weather Condition'</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Accidents by Weather Condition'</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
 <div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">Severity</th>
-<th data-quarto-table-cell-role="th">Wind_Speed(mph)</th>
-<th data-quarto-table-cell-role="th">Precipitation(in)</th>
-<th data-quarto-table-cell-role="th">Temperature(F)</th>
-<th data-quarto-table-cell-role="th">Humidity(%)</th>
-<th data-quarto-table-cell-role="th">Visibility(mi)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">count</td>
-<td>1499.000000</td>
-<td>1391.000000</td>
-<td>1027.000000</td>
-<td>1474.000000</td>
-<td>1471.000000</td>
-<td>1468.000000</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">mean</td>
-<td>2.210140</td>
-<td>7.721783</td>
-<td>0.007653</td>
-<td>62.030122</td>
-<td>65.186268</td>
-<td>9.134475</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">std</td>
-<td>0.485302</td>
-<td>5.341519</td>
-<td>0.058991</td>
-<td>18.640740</td>
-<td>22.755323</td>
-<td>2.500550</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">min</td>
-<td>1.000000</td>
-<td>0.000000</td>
-<td>0.000000</td>
-<td>-35.000000</td>
-<td>6.000000</td>
-<td>0.000000</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">25%</td>
-<td>2.000000</td>
-<td>4.600000</td>
-<td>0.000000</td>
-<td>50.000000</td>
-<td>48.000000</td>
-<td>10.000000</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">50%</td>
-<td>2.000000</td>
-<td>7.000000</td>
-<td>0.000000</td>
-<td>64.000000</td>
-<td>67.000000</td>
-<td>10.000000</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">75%</td>
-<td>2.000000</td>
-<td>10.400000</td>
-<td>0.000000</td>
-<td>76.000000</td>
-<td>85.000000</td>
-<td>10.000000</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">max</td>
-<td>4.000000</td>
-<td>32.200000</td>
-<td>1.360000</td>
-<td>111.000000</td>
-<td>100.000000</td>
-<td>45.000000</td>
-</tr>
-</tbody>
-</table>
-
+<figure class="figure">
+<p><img src="final_proj_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+</figure>
 </div>
 </div>
 </div>
-<div id="35954de8" class="cell" data-execution_count="99">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>weather_condition <span class="op">=</span> traffic_df[<span class="st">'Weather_Condition'</span>].dropna().unique()</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Weather Conditions:"</span>, weather_condition)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Number of Unique Weather Conditions:"</span>, <span class="bu">len</span>(weather_condition))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Weather Conditions: ['Fair' 'Wintry Mix' 'Light Rain' 'Cloudy' 'Mostly Cloudy' 'Partly Cloudy'
- 'Clear' 'Scattered Clouds' 'Fog' 'Overcast' 'Light Snow' 'T-Storm'
- 'Thunderstorms and Rain' 'Thunder' 'Light Rain with Thunder' 'Rain'
- 'Showers in the Vicinity' 'Mostly Cloudy / Windy' 'Heavy Rain'
- 'Cloudy / Windy' 'Light Drizzle' 'Heavy T-Storm' 'Light Rain / Windy'
- 'Smoke' 'Haze' 'Blowing Dust / Windy' 'N/A Precipitation'
- 'Thunder in the Vicinity' 'Snow' 'Heavy Thunderstorms and Rain'
- 'Shallow Fog' 'Light Freezing Drizzle' 'Fair / Windy' 'Patches of Fog'
- 'Light Snow / Windy' 'Blowing Snow / Windy' 'Thunderstorm' 'Drizzle'
- 'T-Storm / Windy' 'Partly Cloudy / Windy']
-Number of Unique Weather Conditions: 40</code></pre>
+<p>Here in this visualization I analyzed accidents by weather condition, where it shows that the largest number of accidents seems to happen in fair weather, with mostly cloudy, clear, cloudy, partly cloudy, and overcast trailing behind that. This could be due to the fact that fair or cloudy weather is typically common so more accidents happen due to the sheer amount that this weather is present in daily life.</p>
+<div id="840b9dc6" class="cell" data-execution_count="53">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> stopwords</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'stopwords'</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>stop_words <span class="op">=</span> <span class="bu">set</span>(stopwords.words(<span class="st">'english'</span>))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>my_stop_words <span class="op">=</span> {<span class="st">'due'</span>, <span class="st">'accident'</span>, <span class="st">'ca'</span>}</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>stop_words.update(my_stop_words)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Description'</span>] <span class="op">=</span> traffic_df[<span class="st">'Description'</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> text_process(description, stop_words):</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  description <span class="op">=</span> description.lower()</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  words <span class="op">=</span> description.split()</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># removing the stop words</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  words_no_stop <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> words <span class="cf">if</span> w <span class="kw">not</span> <span class="kw">in</span> stop_words]</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#joining the words back into a string</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="st">' '</span>.join(words_no_stop)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[nltk_data] Downloading package stopwords to /home/jovyan/nltk_data...
+[nltk_data]   Package stopwords is already up-to-date!</code></pre>
 </div>
 </div>
-<div id="07d0b8d2" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Weather_Condition'</span>].value_counts().plot(kind<span class="op">=</span><span class="st">'bar'</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Weather Condition'</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Accidents by Weather Condition'</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="02f3e09c" class="cell" data-execution_count="54">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>county <span class="op">=</span> <span class="st">'Los Angeles'</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>traffic_df_location <span class="op">=</span> traffic_df[traffic_df[<span class="st">'County'</span>] <span class="op">==</span> county]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'description_final'</span>] <span class="op">=</span> traffic_df[<span class="st">'Description'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: text_process(x, stop_words))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>all_descriptions_location <span class="op">=</span> <span class="st">' '</span>.join(traffic_df_location[<span class="st">'description_final'</span>])</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>wordcloud <span class="op">=</span> WordCloud(width<span class="op">=</span><span class="dv">800</span>, height<span class="op">=</span><span class="dv">400</span>, background_color<span class="op">=</span><span class="st">'white'</span>).generate(all_descriptions_location)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>plt.imshow(wordcloud)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Common words in Traffic Accident Descriptions in Los Angeles County'</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -436,73 +288,101 @@ Number of Unique Weather Conditions: 40</code></pre>
 </div>
 </div>
 </div>
-<div id="840b9dc6" class="cell" data-execution_count="114">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> stopwords</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'stopwords'</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>stop_words <span class="op">=</span> <span class="bu">set</span>(stopwords.words(<span class="st">'english'</span>))</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>custom_stop_words <span class="op">=</span> {<span class="st">'due'</span>, <span class="st">'accident'</span>, <span class="st">'ca'</span>}</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>stop_words.update(custom_stop_words)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Description'</span>] <span class="op">=</span> traffic_df[<span class="st">'Description'</span>].astype(<span class="bu">str</span>)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> text_process(description, stop_words):</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  description <span class="op">=</span> description.lower()</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">#description = re.sub(r'\d+', '', description)</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#description = re.sub(r'[^\w\s]', '', description)</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  words <span class="op">=</span> description.split()</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Remove stop words</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  words_no_stop <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> words <span class="cf">if</span> w <span class="kw">not</span> <span class="kw">in</span> stop_words]</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Join words back into a single string</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="st">' '</span>.join(words_no_stop)</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'description_final'</span>] <span class="op">=</span> traffic_df[<span class="st">'Description'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: text_process(x, stop_words))</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all descriptions into a single string</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>all_descriptions <span class="op">=</span> <span class="st">' '</span>.join(traffic_df[<span class="st">'description_final'</span>])</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the word cloud</span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>wordcloud <span class="op">=</span> WordCloud(width<span class="op">=</span><span class="dv">800</span>, height<span class="op">=</span><span class="dv">400</span>, background_color<span class="op">=</span><span class="st">'white'</span>).generate(all_descriptions)</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the word cloud</span></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>plt.imshow(wordcloud, interpolation<span class="op">=</span><span class="st">'bilinear'</span>)</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Word Cloud of Traffic Accident Descriptions'</span>)</span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>[nltk_data] Downloading package stopwords to /home/jovyan/nltk_data...
-[nltk_data]   Package stopwords is already up-to-date!</code></pre>
-</div>
+<div id="8729e7d7" class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>county <span class="op">=</span> <span class="st">'New York'</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>traffic_df_location <span class="op">=</span> traffic_df[traffic_df[<span class="st">'County'</span>] <span class="op">==</span> county]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'description_final'</span>] <span class="op">=</span> traffic_df[<span class="st">'Description'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: text_process(x, stop_words))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>all_descriptions_location <span class="op">=</span> <span class="st">' '</span>.join(traffic_df_location[<span class="st">'description_final'</span>])</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>wordcloud <span class="op">=</span> WordCloud(width<span class="op">=</span><span class="dv">800</span>, height<span class="op">=</span><span class="dv">400</span>, background_color<span class="op">=</span><span class="st">'white'</span>).generate(all_descriptions_location)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>plt.imshow(wordcloud)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Common words in Traffic Accident Descriptions in New York County'</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-9-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="final_proj_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="02f3e09c" class="cell" data-execution_count="111">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>county <span class="op">=</span> <span class="st">'Los Angeles'</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>traffic_df_location <span class="op">=</span> traffic_df[traffic_df[<span class="st">'County'</span>] <span class="op">==</span> county]</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'description_final'</span>] <span class="op">=</span> traffic_df[<span class="st">'Description'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: text_process(x, stop_words))</span>
+<div id="62bf3d7e" class="cell" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>county <span class="op">=</span> <span class="st">'San Francisco'</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>traffic_df_location <span class="op">=</span> traffic_df[traffic_df[<span class="st">'County'</span>] <span class="op">==</span> county]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'description_final'</span>] <span class="op">=</span> traffic_df[<span class="st">'Description'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: text_process(x, stop_words))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>all_descriptions_location <span class="op">=</span> <span class="st">' '</span>.join(traffic_df_location[<span class="st">'description_final'</span>])</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>wordcloud <span class="op">=</span> WordCloud(width<span class="op">=</span><span class="dv">800</span>, height<span class="op">=</span><span class="dv">400</span>, background_color<span class="op">=</span><span class="st">'white'</span>).generate(all_descriptions_location)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">5</span>))</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>plt.imshow(wordcloud)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Common words in Traffic Accident Descriptions in SF County'</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_proj_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In regards to LA County, common words include “blvd”, “exit”, “fwy”, “slow traffic” and “ave”. For New York I notice the standout words are “bridge”, “hudson”, “river”, and “harlem”. Looking at SF County words such as “westbound”, “market”, “polk”, and “blocked” stand out. I notice exit seems to be more popular in regards to LA which can indicate the urban structure of the city itself plays a role in where these accidents happen. The LA area is more car centric compared to more urban and condensed areas like New York and SF so making it reasonable that words like freeway or exit are more apparent in their accident descriptions.</p>
+<div id="6cabbd0b" class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>accident_per_state <span class="op">=</span> traffic_df.groupby(<span class="st">'State'</span>).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>accident_per_state <span class="op">=</span> accident_per_state.sort_values(<span class="st">'Number_of_Accidents'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">24</span>, <span class="dv">12</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>plt.bar(accident_per_state[<span class="st">'State'</span>], accident_per_state[<span class="st">'Number_of_Accidents'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'State'</span>, fontsize<span class="op">=</span><span class="dv">23</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">23</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by State'</span>, fontsize<span class="op">=</span><span class="dv">25</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>plt.xticks(fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_proj_files/figure-html/cell-9-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In regards to the number of accidents by state, California, Florida, and Texas take the spots, however these are also the states with the highest population numbers so it’s difficult to make assumptions based on this as this is most likely due to the sheer number of people that live in these states.</p>
+<div id="99585614" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>severity_by_state <span class="op">=</span> traffic_df.groupby(<span class="st">'State'</span>)[<span class="st">'Severity'</span>].mean().reset_index()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#sorting by severity</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>severity_by_state <span class="op">=</span> severity_by_state.sort_values(by<span class="op">=</span><span class="st">'Severity'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>all_descriptions_location <span class="op">=</span> <span class="st">' '</span>.join(traffic_df_location[<span class="st">'description_final'</span>])</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>wordcloud <span class="op">=</span> WordCloud(width<span class="op">=</span><span class="dv">800</span>, height<span class="op">=</span><span class="dv">400</span>, background_color<span class="op">=</span><span class="st">'white'</span>).generate(all_descriptions_location)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>plt.imshow(wordcloud, interpolation<span class="op">=</span><span class="st">'bilinear'</span>)</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Common words in Traffic Accident Descriptions in Los Angeles County'</span>)</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">12</span>))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>plt.bar(severity_by_state[<span class="st">'State'</span>], severity_by_state[<span class="st">'Severity'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'State'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Average Severity of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Average Severity of Accidents by State'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>plt.xticks(fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -511,26 +391,19 @@ Number of Unique Weather Conditions: 40</code></pre>
 </div>
 </div>
 </div>
-<div id="8729e7d7" class="cell" data-execution_count="112">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>county <span class="op">=</span> <span class="st">'New York'</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>traffic_df_location <span class="op">=</span> traffic_df[traffic_df[<span class="st">'County'</span>] <span class="op">==</span> county]</span>
+<p>When viewing average severity by state, the top spots were surprisingly different from the number of accidents by state; in this case Wisconsin, Rhode Island, Nevada, and Maryland, Illinois, Georgia, and Mississippi have the highest average severity. This could be due to the fact these states are less populated and may not have as good road infrastructure compared to other states. After some research I found that Misisisipi is also known to have some of the poorest lighting in the country and high rates of drunk driving which could also contribute to the severity of these accidents.</p>
+<div id="884f7daa" class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>avg_severity_by_weather <span class="op">=</span> traffic_df.groupby(<span class="st">'Weather_Condition'</span>)[<span class="st">'Severity'</span>].mean().reset_index()</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>avg_severity_by_weather <span class="op">=</span> avg_severity_by_weather.sort_values(by<span class="op">=</span><span class="st">'Severity'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'description_final'</span>] <span class="op">=</span> traffic_df[<span class="st">'Description'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: text_process(x, stop_words))</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>all_descriptions_location <span class="op">=</span> <span class="st">' '</span>.join(traffic_df_location[<span class="st">'description_final'</span>])</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>wordcloud <span class="op">=</span> WordCloud(width<span class="op">=</span><span class="dv">800</span>, height<span class="op">=</span><span class="dv">400</span>, background_color<span class="op">=</span><span class="st">'white'</span>).generate(all_descriptions_location)</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>plt.imshow(wordcloud, interpolation<span class="op">=</span><span class="st">'bilinear'</span>)</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Common words in Traffic Accident Descriptions in New York County'</span>)</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">41</span>, <span class="dv">20</span>))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>plt.bar(avg_severity_by_weather[<span class="st">'Weather_Condition'</span>], avg_severity_by_weather[<span class="st">'Severity'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Weather Condition'</span>, fontsize <span class="op">=</span> <span class="dv">30</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Average Accident Severity'</span>, fontsize<span class="op">=</span><span class="dv">25</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Average Accident Severity by Weather Condition'</span>, fontsize<span class="op">=</span><span class="dv">35</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">50</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -539,26 +412,22 @@ Number of Unique Weather Conditions: 40</code></pre>
 </div>
 </div>
 </div>
-<div id="62bf3d7e" class="cell" data-execution_count="65">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>county <span class="op">=</span> <span class="st">'San Francisco'</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>traffic_df_location <span class="op">=</span> traffic_df[traffic_df[<span class="st">'County'</span>] <span class="op">==</span> county]</span>
+<p>In terms of weather conditions by severity of accident, light freezing drizzle, shallow fog, and thunderstorm, light rain with thunder correlate with the highest average severity of accidents. This indicates that even though more accidents might happen in fair weather, the severity of the accident has a connection to harsher weather.</p>
+<div id="09fd2821" class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Wind_Speed(mph)'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Wind_Speed(mph)'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Wind_Speed(mph)'</span>])</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'description_final'</span>] <span class="op">=</span> traffic_df[<span class="st">'Description'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: text_process(x, stop_words))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>windspeed <span class="op">=</span> traffic_df.groupby(<span class="st">'Wind_Speed(mph)'</span>).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>all_descriptions_location <span class="op">=</span> <span class="st">' '</span>.join(traffic_df_location[<span class="st">'description_final'</span>])</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>wordcloud <span class="op">=</span> WordCloud(width<span class="op">=</span><span class="dv">800</span>, height<span class="op">=</span><span class="dv">400</span>, background_color<span class="op">=</span><span class="st">'white'</span>).generate(all_descriptions_location)</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">5</span>))</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>plt.imshow(wordcloud, interpolation<span class="op">=</span><span class="st">'bilinear'</span>)</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Common words in Traffic Accident Descriptions in SF County'</span>)</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>plt.plot(windspeed[<span class="st">'Wind_Speed(mph)'</span>], windspeed[<span class="st">'Number_of_Accidents'</span>], marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Wind Speed (mph)'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by Wind Speed'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -567,30 +436,62 @@ Number of Unique Weather Conditions: 40</code></pre>
 </div>
 </div>
 </div>
-<div id="df54d52a" class="cell" data-execution_count="119">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<div id="51d3cc03" class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Severity'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Severity'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Wind_Speed(mph)'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Wind_Speed(mph)'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Month'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.month</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Severity'</span>, <span class="st">'Wind_Speed(mph)'</span>])</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#grouping by month and count the number of accidents</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>accident_per_month <span class="op">=</span> traffic_df.groupby(<span class="st">'Month'</span>).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#grouping by wind speed and figuring out the avg severity</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>severity_by_wind_speed <span class="op">=</span> traffic_df.groupby(<span class="st">'Wind_Speed(mph)'</span>)[<span class="st">'Severity'</span>].mean().reset_index()</span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort the DataFrame by month for proper order in the plot</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>accident_per_month <span class="op">=</span> accident_per_month.sort_values(<span class="st">'Month'</span>)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>plt.bar(accident_per_month[<span class="st">'Month'</span>], accident_per_month[<span class="st">'Number_of_Accidents'</span>], color<span class="op">=</span><span class="st">'purple'</span>)</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Month'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by Month'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>plt.xticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>plt.plot(severity_by_wind_speed[<span class="st">'Wind_Speed(mph)'</span>], severity_by_wind_speed[<span class="st">'Severity'</span>], marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Wind Speed (mph)'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Average Severity'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Average Severity of Accidents by Wind Speed'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_proj_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>I then wanted to analyze the number of accidents based on other weather factors like wind speed. Based on the plot, the higher the wind speed the less accidents that seem to occur, however this is fitting with the previous data that shows most accidents occur in fair weather so it makes sense there are less accidents with higher wind speeds. However when looking at average severity of accidents by wind speed there is more of a pattern showing higher severity is correlated with higher wind speed. Although there are many accidents with high wind speeds and not high severity, the only points of high severity such as 3 and over, are all correlated with higher wind speeds around over 20 mph.</p>
+<div id="fd4a0821" class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Year'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.year</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>weather_conditions <span class="op">=</span> [<span class="st">'Overcast'</span>, <span class="st">'Fair'</span>, <span class="st">'Heavy Rain'</span>, <span class="st">'Cloudy'</span>, <span class="st">'Rain'</span>, <span class="st">'Mostly Cloudy'</span>, <span class="st">'Fog'</span>]</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#make a dictionary</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>weather_data <span class="op">=</span> {}</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> condition <span class="kw">in</span> weather_conditions:</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    cond_df <span class="op">=</span> traffic_df[traffic_df[<span class="st">'Weather_Condition'</span>] <span class="op">==</span> condition]</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    condition_per_year <span class="op">=</span> cond_df.groupby(<span class="st">'Year'</span>).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    weather_data[condition] <span class="op">=</span> condition_per_year</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> condition, data <span class="kw">in</span> weather_data.items():</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    plt.plot(data[<span class="st">'Year'</span>], data[<span class="st">'Number_of_Accidents'</span>], marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, label<span class="op">=</span>condition)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Year'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents per Year for Different Weather Conditions'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>plt.xticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>) </span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'Weather Condition'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -599,21 +500,26 @@ Number of Unique Weather Conditions: 40</code></pre>
 </div>
 </div>
 </div>
-<div id="6cabbd0b" class="cell" data-execution_count="123">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>accident_per_state <span class="op">=</span> traffic_df.groupby(<span class="st">'State'</span>).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>accident_per_state <span class="op">=</span> accident_per_state.sort_values(<span class="st">'Number_of_Accidents'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">8</span>))</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>plt.bar(accident_per_state[<span class="st">'State'</span>], accident_per_state[<span class="st">'Number_of_Accidents'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>)</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'State'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by State'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>plt.xticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="54306a95" class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Hour'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.hour</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#grouping by hour and calc avg severity</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>avg_severity_by_hour <span class="op">=</span> traffic_df.groupby(<span class="st">'Hour'</span>)[<span class="st">'Severity'</span>].mean().reset_index()</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>avg_severity_by_hour <span class="op">=</span> avg_severity_by_hour.sort_values(by<span class="op">=</span><span class="st">'Severity'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>plt.bar(avg_severity_by_hour[<span class="st">'Hour'</span>].astype(<span class="bu">str</span>), avg_severity_by_hour[<span class="st">'Severity'</span>], color<span class="op">=</span><span class="st">'green'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Hour of Day'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Average Accident Severity'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Average Accident Severity by Hour of Day'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -622,14 +528,32 @@ Number of Unique Weather Conditions: 40</code></pre>
 </div>
 </div>
 </div>
-<div id="36f6044b" class="cell" data-execution_count="124">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>plt.hist(traffic_df[<span class="st">'Severity'</span>], bins<span class="op">=</span><span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>), edgecolor<span class="op">=</span><span class="st">'black'</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Severity'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Distribution of Accident Severity'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>plt.xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>))</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For average accident severity by the hour of the day there doesn’t seem to be a huge difference although it seems the severity is worse at night, 3-4 am or around 11pm, which could be related to the fact it’s dark and less cars out, so there’s a chance of speeding and lack of visibility that could add to the severity of these accidents.</p>
+<div id="3fb2102d" class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop rows with NaT values in 'Start_Time'</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the hour from the date column</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Hour'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.hour</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by hour and count the number of accidents</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>accidents_per_hour <span class="op">=</span> traffic_df.groupby(<span class="st">'Hour'</span>).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort the DataFrame by number of accidents in descending order</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>accidents_per_hour <span class="op">=</span> accidents_per_hour.sort_values(by<span class="op">=</span><span class="st">'Number_of_Accidents'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the bar plot using matplotlib</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>plt.bar(accidents_per_hour[<span class="st">'Hour'</span>].astype(<span class="bu">str</span>), accidents_per_hour[<span class="st">'Number_of_Accidents'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Hour of the Day'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by Hour of the Day'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -638,21 +562,23 @@ Number of Unique Weather Conditions: 40</code></pre>
 </div>
 </div>
 </div>
-<div id="99585614" class="cell" data-execution_count="94">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>severity_by_state <span class="op">=</span> traffic_df.groupby(<span class="st">'State'</span>)[<span class="st">'Severity'</span>].mean().reset_index()</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort by severity for better visualization</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>severity_by_state <span class="op">=</span> severity_by_state.sort_values(by<span class="op">=</span><span class="st">'Severity'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the bar chart</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>plt.bar(severity_by_state[<span class="st">'State'</span>], severity_by_state[<span class="st">'Severity'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'State'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Average Severity of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Average Severity of Accidents by State'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">90</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>However when looking at the number of accidents by hour of day 7 and 8am, and around 4pm seem to have the most accidents occurring, which could be attributed to the fact that during those times its peak commute hours and the most cars are out on the road. On the other hand 2 and 3am have the least amount of accidents occuring; these are prime sleeping hours indicating the least amount of cars are probably on the road.</p>
+<div id="172ca27c" class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Hour'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.hour</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>hour_severity <span class="op">=</span> traffic_df.groupby([<span class="st">'Hour'</span>, <span class="st">'Severity'</span>]).size().unstack(fill_value<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>hour_severity.plot(kind<span class="op">=</span><span class="st">'bar'</span>, stacked<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>), color<span class="op">=</span>[<span class="st">'blue'</span>, <span class="st">'orange'</span>, <span class="st">'green'</span>, <span class="st">'red'</span>])</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Hour of the Day'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by Hour of the Day and Severity'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'Severity'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -661,18 +587,40 @@ Number of Unique Weather Conditions: 40</code></pre>
 </div>
 </div>
 </div>
-<div id="884f7daa" class="cell" data-execution_count="126">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>avg_severity_by_weather <span class="op">=</span> traffic_df.groupby(<span class="st">'Weather_Condition'</span>)[<span class="st">'Severity'</span>].mean().reset_index()</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>avg_severity_by_weather <span class="op">=</span> avg_severity_by_weather.sort_values(by<span class="op">=</span><span class="st">'Severity'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar plot for average severity by weather condition</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">41</span>, <span class="dv">20</span>))</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>plt.bar(avg_severity_by_weather[<span class="st">'Weather_Condition'</span>], avg_severity_by_weather[<span class="st">'Severity'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Weather Condition'</span>, fontsize <span class="op">=</span> <span class="dv">25</span>)</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Average Accident Severity'</span>)</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Average Accident Severity by Weather Condition'</span>, fontsize<span class="op">=</span><span class="dv">35</span>)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">50</span>)</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When looking at the graph with both of these factors combined onto one plot it’s easy to see that the main commuting hours like morning and early evening/later afternoon take the spot for a higher number of accidents. However when looking at severity, the percentage of severity is slightly higher for those slightly later times. For example at 8 am around 20% of accidents fall under higher severity of 3 and 4 whereas at 7 pm closer to 25% of accidents fall under the more severe category which could be correlated to lighting factors.</p>
+<div id="56344996" class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>city_state_accidents <span class="op">=</span> traffic_df.groupby([<span class="st">'City'</span>, <span class="st">'State'</span>]).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>city_state_severity <span class="op">=</span> traffic_df.groupby([<span class="st">'City'</span>, <span class="st">'State'</span>])[<span class="st">'Severity'</span>].mean().reset_index(name<span class="op">=</span><span class="st">'Average_Severity'</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>top_city_state_accidents <span class="op">=</span> city_state_accidents.sort_values(by<span class="op">=</span><span class="st">'Number_of_Accidents'</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">15</span>)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>top_city_state_severity <span class="op">=</span> city_state_severity.sort_values(by<span class="op">=</span><span class="st">'Average_Severity'</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">15</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#highest num of accident plot</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>plt.barh(top_city_state_accidents.<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="ss">f"</span><span class="sc">{</span>x[<span class="st">'City'</span>]<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>x[<span class="st">'State'</span>]<span class="sc">}</span><span class="ss">"</span>, axis<span class="op">=</span><span class="dv">1</span>), </span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>         top_city_state_accidents[<span class="st">'Number_of_Accidents'</span>], color<span class="op">=</span><span class="st">'blue'</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'City, State'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Top 15 Cities with the Highest Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>plt.gca().invert_yaxis()</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="co">#severity plot</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>plt.barh(top_city_state_severity.<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="ss">f"</span><span class="sc">{</span>x[<span class="st">'City'</span>]<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>x[<span class="st">'State'</span>]<span class="sc">}</span><span class="ss">"</span>, axis<span class="op">=</span><span class="dv">1</span>), </span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>         top_city_state_severity[<span class="st">'Average_Severity'</span>], color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Average Severity of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'City, State'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Top 15 US Cities with the Highest Severity of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>plt.gca().invert_yaxis()</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -680,22 +628,33 @@ Number of Unique Weather Conditions: 40</code></pre>
 </figure>
 </div>
 </div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="final_proj_files/figure-html/cell-18-output-2.png" class="img-fluid figure-img"></p>
+</figure>
 </div>
-<div id="09fd2821" class="cell" data-execution_count="81">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Wind_Speed(mph)'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Wind_Speed(mph)'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Wind_Speed(mph)'</span>])</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by windspeed and count the number of accidents</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>windspeed_accidents <span class="op">=</span> traffic_df.groupby(<span class="st">'Wind_Speed(mph)'</span>).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the data</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>plt.plot(windspeed_accidents[<span class="st">'Wind_Speed(mph)'</span>], windspeed_accidents[<span class="st">'Number_of_Accidents'</span>], marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Wind Speed (mph)'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by Wind Speed'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<p>I also decided to look at the top 15 cities with the highest number of accidents and highest severity of accidents to see if there were any connections. Miami took the top spot for highest number of accidents which was followed by LA and Charlotte. There is an ongoing stereotype that Florida has the worst drivers, which makes me wonder if overall driver compentence or driver error could potentially play a role in this stat, whether its driver distractions or driving drunk. In terms of highest severity I noticed there were many Pennsylvania cities on this, compared to any other state, which makes me wonder if there is some overarching issue in Pennsylvania whether it’s their laws, infrastructure, or driver type that could be having an impact on the severity of accidents.</p>
+<div id="7c428daf" class="cell" data-execution_count="49">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>])</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'year'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.year</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'month'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.month</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>accidents_per_month <span class="op">=</span> traffic_df.groupby([<span class="st">'year'</span>, <span class="st">'month'</span>]).size().reset_index(name<span class="op">=</span><span class="st">'number_of_accidents'</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>accidents_per_month[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(accidents_per_month[[<span class="st">'year'</span>, <span class="st">'month'</span>]].assign(day<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">8</span>))</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>plt.plot(accidents_per_month[<span class="st">'Start_Time'</span>], accidents_per_month[<span class="st">'number_of_accidents'</span>], marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Year'</span>,fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>,fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents Over Time'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -704,24 +663,25 @@ Number of Unique Weather Conditions: 40</code></pre>
 </div>
 </div>
 </div>
-<div id="51d3cc03" class="cell" data-execution_count="129">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Severity'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Severity'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Wind_Speed(mph)'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Wind_Speed(mph)'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Severity'</span>, <span class="st">'Wind_Speed(mph)'</span>])</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#grouping by wind speed and figuring out the avg severity</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>severity_by_wind_speed <span class="op">=</span> traffic_df.groupby(<span class="st">'Wind_Speed(mph)'</span>)[<span class="st">'Severity'</span>].mean().reset_index()</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>plt.plot(severity_by_wind_speed[<span class="st">'Wind_Speed(mph)'</span>], severity_by_wind_speed[<span class="st">'Severity'</span>], marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Wind Speed (mph)'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Average Severity of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Average Severity of Accidents by Wind Speed'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Looking at the accidents over time, the numbers seem pretty steady until around sometime in 2019 when the numbers seem to spike, before dropping again around early 2020, which coincides with the time of the major Covid-19 pandemic, indicating the pandemic could’ve caused a reduction in accidents for a period of time since most people were forced to stay home under lockdown restrictions. The numbers then increase by around late 2020 which could potentially be attributed to the trend of reckless driving after the pandemic due to less cars on the road, such as speeding, racing, not wearing seat belts, road rage, or driving under the influence, therefore increasing the overall number of accidents. From late 2022 to early 2023 there does seem to be a significant drop in the number of accidents. Overall there seems to be an increase in accidents compared from pre pandemic times to the post pandemic era which is interesting to see.</p>
+<div id="31022929" class="cell" data-execution_count="50">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Time Period'</span>] <span class="op">=</span> [<span class="st">'Pre-COVID'</span> <span class="cf">if</span> date <span class="op">&lt;</span> pd.Timestamp(<span class="st">'2020-03-01'</span>) <span class="cf">else</span> <span class="st">'Post-COVID'</span> <span class="cf">for</span> date <span class="kw">in</span> traffic_df[<span class="st">'Start_Time'</span>]]</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'YearMonth'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.to_period(<span class="st">'M'</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>monthly_severity <span class="op">=</span> traffic_df.groupby([<span class="st">'YearMonth'</span>, <span class="st">'Time Period'</span>])[<span class="st">'Severity'</span>].mean().unstack(<span class="st">'Time Period'</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>monthly_severity.plot(kind<span class="op">=</span><span class="st">'line'</span>, marker<span class="op">=</span><span class="st">'o'</span>, ax<span class="op">=</span>plt.gca())</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Year'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Avg Accident Severity'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Trend of Accident Severity Before and After COVID-19'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'Time Period'</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -730,423 +690,19 @@ Number of Unique Weather Conditions: 40</code></pre>
 </div>
 </div>
 </div>
-<div id="1616ad40" class="cell" data-execution_count="82">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Precipitation(in)'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Precipitation(in)'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Precipitation(in)'</span>])</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by windspeed and count the number of accidents</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>windspeed_accidents <span class="op">=</span> traffic_df.groupby(<span class="st">'Precipitation(in)'</span>).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the data</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>plt.plot(windspeed_accidents[<span class="st">'Precipitation(in)'</span>], windspeed_accidents[<span class="st">'Number_of_Accidents'</span>], marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span><span class="st">'purple'</span>)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Precipitation(in)'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by Precipitation (in)'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-21-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="fd4a0821" class="cell" data-execution_count="44">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop rows with NaT values in 'Start_Time'</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the year from the date column</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Year'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.year</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the weather conditions you want to plot</span></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>weather_conditions <span class="op">=</span> [<span class="st">'Overcast'</span>, <span class="st">'Fair'</span>, <span class="st">'Heavy Rain'</span>, <span class="st">'Cloudy'</span>, <span class="st">'Rain'</span>, <span class="st">'Mostly Cloudy'</span>, <span class="st">'Fog'</span>]</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dictionary to store data for each weather condition</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>weather_data <span class="op">=</span> {}</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> condition <span class="kw">in</span> weather_conditions:</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filter the dataset for the current weather condition</span></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    condition_df <span class="op">=</span> traffic_df[traffic_df[<span class="st">'Weather_Condition'</span>] <span class="op">==</span> condition]</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Group by year and count the number of accidents</span></span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    condition_per_year <span class="op">=</span> condition_df.groupby(<span class="st">'Year'</span>).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store the result in the dictionary</span></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    weather_data[condition] <span class="op">=</span> condition_per_year</span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the line graph using matplotlib</span></span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> condition, data <span class="kw">in</span> weather_data.items():</span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>    plt.plot(data[<span class="st">'Year'</span>], data[<span class="st">'Number_of_Accidents'</span>], marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, label<span class="op">=</span>condition)</span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Year'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents per Year for Different Weather Conditions'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>plt.xticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)  <span class="co"># Add grid for better readability</span></span>
-<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'Weather Condition'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)  <span class="co"># Add a legend</span></span>
-<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-22-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="0b349925" class="cell" data-execution_count="53">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>stop_words <span class="op">=</span> <span class="bu">set</span>(stopwords.words(<span class="st">'english'</span>))</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Add custom stopwords</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>custom_stop_words <span class="op">=</span> {<span class="st">'due'</span>, <span class="st">'accident'</span>, <span class="st">'near'</span>, <span class="st">'at'</span>, <span class="st">'from'</span>, <span class="st">'involved'</span>, <span class="st">'on'</span>, <span class="st">'the'</span>, <span class="st">'and'</span>, <span class="st">'a'</span>, <span class="st">'to'</span>,<span class="st">'ca'</span>, <span class="st">'fl'</span>, <span class="st">'ny'</span>, <span class="st">'w'</span>, <span class="st">'e'</span>, <span class="st">'n'</span>, <span class="st">'tx'</span>}</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>stop_words.update(custom_stop_words)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># List of states to analyze</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>states_to_analyze <span class="op">=</span> [<span class="st">'CA'</span>, <span class="st">'TX'</span>, <span class="st">'FL'</span>, <span class="st">'NY'</span>, <span class="st">'NV'</span>, <span class="st">'AZ'</span>]  <span class="co"># Example states: California, Texas, Florida</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the DataFrame to include only these states</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> traffic_df[traffic_df[<span class="st">'State'</span>].isin(states_to_analyze)]</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the number of rows and columns for subplots</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>num_states <span class="op">=</span> <span class="bu">len</span>(states_to_analyze)</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>num_rows <span class="op">=</span> num_states</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Create subplots</span></span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(num_rows, num_cols, figsize<span class="op">=</span>(<span class="dv">10</span>, num_rows <span class="op">*</span> <span class="dv">5</span>))</span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'Common Words in Traffic Accident Descriptions by Selected States'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, state <span class="kw">in</span> <span class="bu">enumerate</span>(states_to_analyze):</span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    state_df <span class="op">=</span> filtered_df[filtered_df[<span class="st">'State'</span>] <span class="op">==</span> state]</span>
-<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    descriptions <span class="op">=</span> <span class="st">' '</span>.join(state_df[<span class="st">'Description'</span>].dropna()).lower()</span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> re.findall(<span class="vs">r'\b\w+\b'</span>, descriptions)  <span class="co"># Extract words only</span></span>
-<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> [word <span class="cf">for</span> word <span class="kw">in</span> words <span class="cf">if</span> word <span class="kw">not</span> <span class="kw">in</span> stop_words]  <span class="co"># Remove stopwords</span></span>
-<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>    common_words_counts <span class="op">=</span> Counter(words).most_common(<span class="dv">10</span>)</span>
-<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    common_words <span class="op">=</span> [word <span class="cf">for</span> word, count <span class="kw">in</span> common_words_counts]</span>
-<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    counts <span class="op">=</span> [count <span class="cf">for</span> word, count <span class="kw">in</span> common_words_counts]</span>
-<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>    ax <span class="op">=</span> axs[i]</span>
-<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>    ax.barh(common_words, counts, color<span class="op">=</span><span class="st">'skyblue'</span>)</span>
-<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>    ax.set_title(state)</span>
-<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>    ax.invert_yaxis()</span>
-<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>plt.tight_layout(rect<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.95</span>])</span>
-<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-24-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="13d68ee0" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Month'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.month</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by month and calculate the mean severity</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>avg_severity_by_month <span class="op">=</span> traffic_df.groupby(<span class="st">'Month'</span>)[<span class="st">'Severity'</span>].mean().reset_index()</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Map month numbers to month names for better readability</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>month_names <span class="op">=</span> {<span class="dv">1</span>: <span class="st">'January'</span>, <span class="dv">2</span>: <span class="st">'February'</span>, <span class="dv">3</span>: <span class="st">'March'</span>, <span class="dv">4</span>: <span class="st">'April'</span>, <span class="dv">5</span>: <span class="st">'May'</span>, <span class="dv">6</span>: <span class="st">'June'</span>,</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>               <span class="dv">7</span>: <span class="st">'July'</span>, <span class="dv">8</span>: <span class="st">'August'</span>, <span class="dv">9</span>: <span class="st">'September'</span>, <span class="dv">10</span>: <span class="st">'October'</span>, <span class="dv">11</span>: <span class="st">'November'</span>, <span class="dv">12</span>: <span class="st">'December'</span>}</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>avg_severity_by_month[<span class="st">'Month'</span>] <span class="op">=</span> avg_severity_by_month[<span class="st">'Month'</span>].<span class="bu">map</span>(month_names)</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the bar plot using matplotlib</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>plt.bar(avg_severity_by_month[<span class="st">'Month'</span>], avg_severity_by_month[<span class="st">'Severity'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Month'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Average Accident Severity'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Average Accident Severity by Month'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-26-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="54306a95" class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop rows with NaT values in 'Start_Time'</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the hour from the date column</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Hour'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.hour</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by hour and calculate the mean severity</span></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>avg_severity_by_hour <span class="op">=</span> traffic_df.groupby(<span class="st">'Hour'</span>)[<span class="st">'Severity'</span>].mean().reset_index()</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort the DataFrame by severity in descending order</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>avg_severity_by_hour <span class="op">=</span> avg_severity_by_hour.sort_values(by<span class="op">=</span><span class="st">'Severity'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the bar plot using matplotlib</span></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>plt.bar(avg_severity_by_hour[<span class="st">'Hour'</span>].astype(<span class="bu">str</span>), avg_severity_by_hour[<span class="st">'Severity'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Hour of the Day'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Average Accident Severity'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Average Accident Severity by Hour of the Day'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, fontsize<span class="op">=</span><span class="dv">14</span>)  <span class="co"># Set x-ticks from 0 to 23</span></span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-28-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="3fb2102d" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop rows with NaT values in 'Start_Time'</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the hour from the date column</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Hour'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.hour</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by hour and count the number of accidents</span></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>accidents_per_hour <span class="op">=</span> traffic_df.groupby(<span class="st">'Hour'</span>).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort the DataFrame by number of accidents in descending order</span></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>accidents_per_hour <span class="op">=</span> accidents_per_hour.sort_values(by<span class="op">=</span><span class="st">'Number_of_Accidents'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the bar plot using matplotlib</span></span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>plt.bar(accidents_per_hour[<span class="st">'Hour'</span>].astype(<span class="bu">str</span>), accidents_per_hour[<span class="st">'Number_of_Accidents'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Hour of the Day'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by Hour of the Day'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-29-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="172ca27c" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop rows with NaT values in 'Start_Time'</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the hour from the date column</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Hour'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.hour</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by hour and severity and count the number of accidents</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>hourly_severity_counts <span class="op">=</span> traffic_df.groupby([<span class="st">'Hour'</span>, <span class="st">'Severity'</span>]).size().unstack(fill_value<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the stacked bar chart</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>hourly_severity_counts.plot(kind<span class="op">=</span><span class="st">'bar'</span>, stacked<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>), color<span class="op">=</span>[<span class="st">'skyblue'</span>, <span class="st">'orange'</span>, <span class="st">'green'</span>, <span class="st">'red'</span>])</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Hour of the Day'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by Hour of the Day and Severity'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'Severity'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-30-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="9d2f69b5" class="cell" data-execution_count="54">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>plt.hist(traffic_df[<span class="st">'Sunrise_Sunset'</span>], bins<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">'blue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time of Day'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents in Day vs Night'</span>, fontsize<span class="op">=</span><span class="dv">24</span>)</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-31-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="ffc23f01" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop rows with NaT values in 'Start_Time'</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the month from the date column</span></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Month'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.month</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by month and severity and count the number of accidents</span></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>monthly_severity_counts <span class="op">=</span> traffic_df.groupby([<span class="st">'Month'</span>, <span class="st">'Severity'</span>]).size().unstack(fill_value<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Map month numbers to month names for better readability</span></span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>month_names <span class="op">=</span> {<span class="dv">1</span>: <span class="st">'January'</span>, <span class="dv">2</span>: <span class="st">'February'</span>, <span class="dv">3</span>: <span class="st">'March'</span>, <span class="dv">4</span>: <span class="st">'April'</span>, <span class="dv">5</span>: <span class="st">'May'</span>, <span class="dv">6</span>: <span class="st">'June'</span>,</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>               <span class="dv">7</span>: <span class="st">'July'</span>, <span class="dv">8</span>: <span class="st">'August'</span>, <span class="dv">9</span>: <span class="st">'September'</span>, <span class="dv">10</span>: <span class="st">'October'</span>, <span class="dv">11</span>: <span class="st">'November'</span>, <span class="dv">12</span>: <span class="st">'December'</span>}</span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>monthly_severity_counts.index <span class="op">=</span> monthly_severity_counts.index.<span class="bu">map</span>(month_names)</span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the stacked bar chart</span></span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>monthly_severity_counts.plot(kind<span class="op">=</span><span class="st">'bar'</span>, stacked<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>), color<span class="op">=</span>[<span class="st">'skyblue'</span>, <span class="st">'orange'</span>, <span class="st">'green'</span>, <span class="st">'red'</span>])</span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Month'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by Month and Severity'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'Severity'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-32-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="56344996" class="cell" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop rows with NaT values in 'Start_Time'</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by city and state and count the number of accidents</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>city_state_accidents <span class="op">=</span> traffic_df.groupby([<span class="st">'City'</span>, <span class="st">'State'</span>]).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by city and state and calculate the mean severity</span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>city_state_severity <span class="op">=</span> traffic_df.groupby([<span class="st">'City'</span>, <span class="st">'State'</span>])[<span class="st">'Severity'</span>].mean().reset_index(name<span class="op">=</span><span class="st">'Average_Severity'</span>)</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the city and state with the highest number of accidents</span></span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>top_city_state_accidents <span class="op">=</span> city_state_accidents.sort_values(by<span class="op">=</span><span class="st">'Number_of_Accidents'</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">10</span>)</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the city and state with the highest severity of accidents</span></span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>top_city_state_severity <span class="op">=</span> city_state_severity.sort_values(by<span class="op">=</span><span class="st">'Average_Severity'</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">10</span>)</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the city and state with the highest number of accidents</span></span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>plt.barh(top_city_state_accidents.<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="ss">f"</span><span class="sc">{</span>x[<span class="st">'City'</span>]<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>x[<span class="st">'State'</span>]<span class="sc">}</span><span class="ss">"</span>, axis<span class="op">=</span><span class="dv">1</span>), </span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>         top_city_state_accidents[<span class="st">'Number_of_Accidents'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>)</span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'City, State'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Top 10 Cities with the Highest Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>plt.gca().invert_yaxis()</span>
-<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the city and state with the highest severity of accidents</span></span>
-<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>plt.barh(top_city_state_severity.<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="ss">f"</span><span class="sc">{</span>x[<span class="st">'City'</span>]<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>x[<span class="st">'State'</span>]<span class="sc">}</span><span class="ss">"</span>, axis<span class="op">=</span><span class="dv">1</span>), </span>
-<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>         top_city_state_severity[<span class="st">'Average_Severity'</span>], color<span class="op">=</span><span class="st">'red'</span>)</span>
-<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Average Severity of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'City, State'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Top 10 US Cities with the Highest Severity of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>plt.gca().invert_yaxis()</span>
-<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-34-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-34-output-2.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="7c428daf" class="cell" data-execution_count="56">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>])</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract year, month, and day from the 'date' column</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'year'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.year</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'month'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.month</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'day'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.day</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by year and month and count the number of accidents</span></span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>accidents_per_month <span class="op">=</span> traffic_df.groupby([<span class="st">'year'</span>, <span class="st">'month'</span>]).size().reset_index(name<span class="op">=</span><span class="st">'number_of_accidents'</span>)</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a datetime column for plotting</span></span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>accidents_per_month[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(accidents_per_month[[<span class="st">'year'</span>, <span class="st">'month'</span>]].assign(day<span class="op">=</span><span class="dv">1</span>))</span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the number of accidents over time</span></span>
-<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>plt.plot(accidents_per_month[<span class="st">'Start_Time'</span>], accidents_per_month[<span class="st">'number_of_accidents'</span>], marker<span class="op">=</span><span class="st">'o'</span>)</span>
-<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Date'</span>)</span>
-<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>)</span>
-<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents Over Time'</span>)</span>
-<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
-<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-35-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="31022929" class="cell" data-execution_count="55">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop rows with NaT values in 'Start_Time'</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the periods</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Time Period'</span>] <span class="op">=</span> [<span class="st">'Pre-COVID'</span> <span class="cf">if</span> date <span class="op">&lt;</span> pd.Timestamp(<span class="st">'2020-03-01'</span>) <span class="cf">else</span> <span class="st">'Post-COVID'</span> <span class="cf">for</span> date <span class="kw">in</span> traffic_df[<span class="st">'Start_Time'</span>]]</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract year-month for trend analysis</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'YearMonth'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.to_period(<span class="st">'M'</span>)</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate mean severity for each month</span></span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>monthly_severity <span class="op">=</span> traffic_df.groupby([<span class="st">'YearMonth'</span>, <span class="st">'Time Period'</span>])[<span class="st">'Severity'</span>].mean().unstack(<span class="st">'Time Period'</span>)</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create line plot for monthly trend</span></span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>monthly_severity.plot(kind<span class="op">=</span><span class="st">'line'</span>, marker<span class="op">=</span><span class="st">'o'</span>, ax<span class="op">=</span>plt.gca())</span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Date'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Mean Accident Severity'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Monthly Trend of Accident Severity Before and After COVID-19'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'Period'</span>)</span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-36-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div id="2970f854" class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>Comparing this to the severity of accidents before and after the start of the Covid-19 pandemic, the more severe accidents happened before the pandemic, with there being a drop in severity after March 2020. This could potentially be attributed to multiple factors. With reduced traffic and vehicles on the road, the likelihood of severe multi vehicle collisions occurring may have decreased. During the pandemic essential trips were also much more common like driving to the local grocery store, which usually involves less exposure to freeways or high speed roads lowering the chances of severe accidents. There was also increased visibility and space on the roads with fewer vehicles which allowed drivers more room to navigate and maneuver, potentially avoiding and lowering high impact crashes. Even when lockdown restrictions were over there were many people who still followed a similar routine to protect themselves from Covid, as well as the many people who have continued to work from home which could’ve had an impact on overall accident severity for years after.</p>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<p>Overall this analysis has revealed different findings that offer insight into factors influencing accidents and their severity, and the changes that have happened over time.</p>
+<p><strong>Weather:</strong> The majority of accidents happen in fair weather conditions, which is likely due to the prevalence of this weather. Other weather conditions however, like light freezing drizzle, shallow fog, and thunderstorms are associated with accidents of higher severity, suggesting that even though accidents may be more frequent in fair weather, harsher weather conditions can pose a risk for more severe accidents. Additionally, certain factors like higher wind speed are correlated with more severe accidents, even though fewer accidents are occurring at higher wind speeds, the ones that do happen are higher in severity.</p>
+<p><strong>Location</strong>: Through analyzing accident description, it was seen that there are recurring themes in certain places. Words like “exit” and “freeway” are more common in LA County, compared to SF and New York counties which reflect the urban structure and car centric culture in the LA area versus SF and New York counties, indicating different accident scenarios based urban layout and infrastructure. Cities that had the highest number of accidents were Miami, LA, and Charlotte which indicate a potential need for specific interventions in these locations to prevent accidents. The cities with the highest severity of accidents include multiple cities in Pennsylvania which suggest there are maybe underlying issues or concerns whether its traffic laws, infrastructure, or driving behaviors that need to be addressed.</p>
+<p><strong>Time of Day</strong>: Number of accidents were at its peaks at times of morning and evening commutes, around 7-8am and 4-5pm, which coincides with the highest traffic volume on the roads. However in terms of severity of accidents, the percentages of higher severity accidents are higher during the night, specifically around 3-4 am and around 11 pm which could be contributed to factors like less lighting and higher speeding.</p>
+<p><strong>Trends over Time and Covid-19 Impact:</strong> There is an overall increase in the amount of accidents from pre pandemic times to post pandemic times, which can possibly be due to reckless driving behaviors due to less crowded roads. Numbers remained pretty steady until there was a spike in 2019, which then was followed by a large drop in early 2020 potentially due to the Covid-19 lockdowns, with the numbers increasing again by late 2020. Although the number of accidents increased post covid, more severe accidents actually happened pre-pandemic, and there is a significant drop in severity after March 2020. This could potentially be attributed to less multi vehicle collisions due to lower traffic volumes, as well as increased visibility and space on the road making it easier to avoid and prevent high impact accidents. There was also the need to only make essential trips like to the grocery store, which usually involved routes that were shorter and didn’t include high speed roads lowering the severity of accidents. Even years after, many jobs continued to stay remote, contributing to the lack of cars out on the road.</p>
+<p><strong>These findings showcase the complex nature of traffic accidents and the different factors that can have an influence. By understanding this data and results, this can allow for the targeted interventions and policies to be developed to improve road safety. For example, improving exit areas could help to reduce accidents in certain locations where this is a recurring issue. Implementing stricter traffic rules and more law enforcement during these higher risk hours as well as when there is harsher weather could help to mitigate accidents. Analyzing these results over time can help in seeing what protocols or policies may have worked or not worked, and in seeing how big events like a pandemic can impact traffic accidents and what can be taken into consideration for traffic safety in the face of future major events.</strong></p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
