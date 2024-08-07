@@ -498,29 +498,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For average accident severity by the hour of the day there doesn’t seem to be a huge difference although it seems the severity is worse at night, 3-4 am or around 11pm, which could be related to the fact it’s dark and less cars out, so there’s a chance of speeding and lack of visibility that could add to the severity of these accidents.</p>
 <div id="3fb2102d" class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop rows with NaT values in 'Start_Time'</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the hour from the date column</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Hour'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.hour</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Hour'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.hour</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>accidents_per_hour <span class="op">=</span> traffic_df.groupby(<span class="st">'Hour'</span>).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>accidents_per_hour <span class="op">=</span> accidents_per_hour.sort_values(by<span class="op">=</span><span class="st">'Number_of_Accidents'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by hour and count the number of accidents</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>accidents_per_hour <span class="op">=</span> traffic_df.groupby(<span class="st">'Hour'</span>).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort the DataFrame by number of accidents in descending order</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>accidents_per_hour <span class="op">=</span> accidents_per_hour.sort_values(by<span class="op">=</span><span class="st">'Number_of_Accidents'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the bar plot using matplotlib</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>plt.bar(accidents_per_hour[<span class="st">'Hour'</span>].astype(<span class="bu">str</span>), accidents_per_hour[<span class="st">'Number_of_Accidents'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Hour of the Day'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by Hour of the Day'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>plt.bar(accidents_per_hour[<span class="st">'Hour'</span>].astype(<span class="bu">str</span>), accidents_per_hour[<span class="st">'Number_of_Accidents'</span>], color<span class="op">=</span><span class="st">'skyblue'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Hour of the Day'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Number of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by Hour of the Day'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>However when looking at the number of accidents by hour of day 7 and 8am, and around 4pm seem to have the most accidents occurring, which could be attributed to the fact that during those times its peak commute hours and the most cars are out on the road. On the other hand 2 and 3am have the least amount of accidents occuring; these are prime sleeping hours indicating the least amount of cars are probably on the road.</p>
 <div id="172ca27c" class="cell">
