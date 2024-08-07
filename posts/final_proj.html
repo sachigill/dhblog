@@ -212,15 +212,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>My dataset is from Kaggle regarding US traffic accidents from 2016-2023 that has data obtained from various places like US and State departments of transportation, and law enforcement agencies. I condensed the original dataset down from 500k entries to around 1500 entries as the file was too large for efficient analysis and visualization. This dataset provides a detailed account of traffic accidents in the United States from February 2016 to March 2023, covering 49 states, and includes key factors like the date, time, city, state, county, weather conditions, severity, etc. of each accident. There is also a description of each accident that can offer a qualitative aspect to this project.</p>
 <p>When conducting data analysis I made sure the columns were in the correct date time format so the data could easily be extracted for visualizations requiring time related features or progressions. I also made sure to handle missing values and filter them out when performing my analysis. I used different libraries for analysis, including Pandas, Matplotlib for plotting the visualizations, and the Natural Language Toolkit (nltk) for text analysis, and wordcloud.</p>
 <p>Source of Dataset:<a href="https://www.kaggle.com/datasets/sobhanmoosavi/us-accidents">Traffic Accident Data</a></p>
-<div id="ec58b350" class="cell" data-execution_count="34">
+<div id="ec58b350" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="d318cbe5" class="cell" data-execution_count="35">
+<div id="d318cbe5" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> pd.read_csv(<span class="st">'https://raw.githubusercontent.com/sachigill/dhfinalproject/main/traffic_accident_data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="07d0b8d2" class="cell" data-scrolled="true" data-execution_count="36">
+<div id="07d0b8d2" class="cell" data-scrolled="true" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Weather_Condition'</span>].value_counts().plot(kind<span class="op">=</span><span class="st">'bar'</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Weather Condition'</span>)</span>
@@ -236,7 +236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Here in this visualization I analyzed accidents by weather condition, where it shows that the largest number of accidents seems to happen in fair weather, with mostly cloudy, clear, cloudy, partly cloudy, and overcast trailing behind that. This could be due to the fact that fair or cloudy weather is typically common so more accidents happen due to the sheer amount that this weather is present in daily life.</p>
-<div id="840b9dc6" class="cell" data-execution_count="53">
+<div id="840b9dc6" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
@@ -262,24 +262,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [nltk_data]   Package stopwords is already up-to-date!</code></pre>
 </div>
 </div>
-<div id="02f3e09c" class="cell" data-execution_count="54">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>county <span class="op">=</span> <span class="st">'Los Angeles'</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>traffic_df_location <span class="op">=</span> traffic_df[traffic_df[<span class="st">'County'</span>] <span class="op">==</span> county]</span>
+<div id="02f3e09c" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'description_final'</span>] <span class="op">=</span> traffic_df[<span class="st">'Description'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: text_process(x, stop_words))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'description_final'</span>] <span class="op">=</span> traffic_df[<span class="st">'Description'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: text_process(x, stop_words))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>county <span class="op">=</span> <span class="st">'Los Angeles'</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>traffic_df_location <span class="op">=</span> traffic_df[traffic_df[<span class="st">'County'</span>] <span class="op">==</span> county]</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>all_descriptions_location <span class="op">=</span> <span class="st">' '</span>.join(traffic_df_location[<span class="st">'description_final'</span>])</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>wordcloud <span class="op">=</span> WordCloud(width<span class="op">=</span><span class="dv">800</span>, height<span class="op">=</span><span class="dv">400</span>, background_color<span class="op">=</span><span class="st">'white'</span>).generate(all_descriptions_location)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>all_descriptions_location <span class="op">=</span> <span class="st">' '</span>.join(traffic_df_location[<span class="st">'description_final'</span>])</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>plt.imshow(wordcloud)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Common words in Traffic Accident Descriptions in Los Angeles County'</span>)</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>wordcloud <span class="op">=</span> WordCloud(width<span class="op">=</span><span class="dv">800</span>, height<span class="op">=</span><span class="dv">400</span>, background_color<span class="op">=</span><span class="st">'white'</span>).generate(all_descriptions_location)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>plt.imshow(wordcloud)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'Common words in Traffic Accident Descriptions in Los Angeles County'</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -288,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="8729e7d7" class="cell" data-execution_count="51">
+<div id="8729e7d7" class="cell" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>county <span class="op">=</span> <span class="st">'New York'</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>traffic_df_location <span class="op">=</span> traffic_df[traffic_df[<span class="st">'County'</span>] <span class="op">==</span> county]</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -315,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div id="62bf3d7e" class="cell" data-execution_count="52">
+<div id="62bf3d7e" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>county <span class="op">=</span> <span class="st">'San Francisco'</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>traffic_df_location <span class="op">=</span> traffic_df[traffic_df[<span class="st">'County'</span>] <span class="op">==</span> county]</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -344,7 +346,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>In regards to LA County, common words include “blvd”, “exit”, “fwy”, “slow traffic” and “ave”. For New York I notice the standout words are “bridge”, “hudson”, “river”, and “harlem”. Looking at SF County words such as “westbound”, “market”, “polk”, and “blocked” stand out. I notice exit seems to be more popular in regards to LA which can indicate the urban structure of the city itself plays a role in where these accidents happen. The LA area is more car centric compared to more urban and condensed areas like New York and SF so making it reasonable that words like freeway or exit are more apparent in their accident descriptions.</p>
-<div id="6cabbd0b" class="cell" data-execution_count="39">
+<div id="6cabbd0b" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>accident_per_state <span class="op">=</span> traffic_df.groupby(<span class="st">'State'</span>).size().reset_index(name<span class="op">=</span><span class="st">'Number_of_Accidents'</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -368,7 +370,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>In regards to the number of accidents by state, California, Florida, and Texas take the spots, however these are also the states with the highest population numbers so it’s difficult to make assumptions based on this as this is most likely due to the sheer number of people that live in these states.</p>
-<div id="99585614" class="cell" data-execution_count="40">
+<div id="99585614" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>severity_by_state <span class="op">=</span> traffic_df.groupby(<span class="st">'State'</span>)[<span class="st">'Severity'</span>].mean().reset_index()</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#sorting by severity</span></span>
@@ -392,7 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>When viewing average severity by state, the top spots were surprisingly different from the number of accidents by state; in this case Wisconsin, Rhode Island, Nevada, and Maryland, Illinois, Georgia, and Mississippi have the highest average severity. This could be due to the fact these states are less populated and may not have as good road infrastructure compared to other states. After some research I found that Misisisipi is also known to have some of the poorest lighting in the country and high rates of drunk driving which could also contribute to the severity of these accidents.</p>
-<div id="884f7daa" class="cell" data-execution_count="41">
+<div id="884f7daa" class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>avg_severity_by_weather <span class="op">=</span> traffic_df.groupby(<span class="st">'Weather_Condition'</span>)[<span class="st">'Severity'</span>].mean().reset_index()</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>avg_severity_by_weather <span class="op">=</span> avg_severity_by_weather.sort_values(by<span class="op">=</span><span class="st">'Severity'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -404,16 +406,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">50</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">18</span>)</span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-11-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
 </div>
 <p>In terms of weather conditions by severity of accident, light freezing drizzle, shallow fog, and thunderstorm, light rain with thunder correlate with the highest average severity of accidents. This indicates that even though more accidents might happen in fair weather, the severity of the accident has a connection to harsher weather.</p>
-<div id="09fd2821" class="cell" data-execution_count="42">
+<div id="09fd2821" class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Wind_Speed(mph)'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Wind_Speed(mph)'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Wind_Speed(mph)'</span>])</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -428,15 +423,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Number of Accidents by Wind Speed'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
-</figure>
 </div>
-</div>
-</div>
-<div id="51d3cc03" class="cell" data-execution_count="43">
+<div id="51d3cc03" class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Severity'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Severity'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Wind_Speed(mph)'</span>] <span class="op">=</span> pd.to_numeric(traffic_df[<span class="st">'Wind_Speed(mph)'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -454,16 +442,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Average Severity of Accidents by Wind Speed'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
 </div>
 <p>I then wanted to analyze the number of accidents based on other weather factors like wind speed. Based on the plot, the higher the wind speed the less accidents that seem to occur, however this is fitting with the previous data that shows most accidents occur in fair weather so it makes sense there are less accidents with higher wind speeds. However when looking at average severity of accidents by wind speed there is more of a pattern showing higher severity is correlated with higher wind speed. Although there are many accidents with high wind speeds and not high severity, the only points of high severity such as 3 and over, are all correlated with higher wind speeds around over 20 mph.</p>
-<div id="fd4a0821" class="cell" data-execution_count="44">
+<div id="fd4a0821" class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -492,15 +473,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>) </span>
 <span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'Weather Condition'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
 <span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
-</figure>
 </div>
-</div>
-</div>
-<div id="54306a95" class="cell" data-execution_count="45">
+<div id="54306a95" class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Hour'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.hour</span>
@@ -520,16 +494,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
 <span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
 </div>
 <p>For average accident severity by the hour of the day there doesn’t seem to be a huge difference although it seems the severity is worse at night, 3-4 am or around 11pm, which could be related to the fact it’s dark and less cars out, so there’s a chance of speeding and lack of visibility that could add to the severity of these accidents.</p>
-<div id="3fb2102d" class="cell" data-execution_count="46">
+<div id="3fb2102d" class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop rows with NaT values in 'Start_Time'</span></span>
@@ -554,16 +521,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
 <span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
 </div>
 <p>However when looking at the number of accidents by hour of day 7 and 8am, and around 4pm seem to have the most accidents occurring, which could be attributed to the fact that during those times its peak commute hours and the most cars are out on the road. On the other hand 2 and 3am have the least amount of accidents occuring; these are prime sleeping hours indicating the least amount of cars are probably on the road.</p>
-<div id="172ca27c" class="cell" data-execution_count="47">
+<div id="172ca27c" class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Hour'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.hour</span>
@@ -579,16 +539,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">14</span>)</span>
 <span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
 <span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
 </div>
 <p>When looking at the graph with both of these factors combined onto one plot it’s easy to see that the main commuting hours like morning and early evening/later afternoon take the spot for a higher number of accidents. However when looking at severity, the percentage of severity is slightly higher for those slightly later times. For example at 8 am around 20% of accidents fall under higher severity of 3 and 4 whereas at 7 pm closer to 25% of accidents fall under the more severe category which could be correlated to lighting factors.</p>
-<div id="56344996" class="cell" data-execution_count="48">
+<div id="56344996" class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -621,23 +574,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Top 15 US Cities with the Highest Severity of Accidents'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
 <span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>plt.gca().invert_yaxis()</span>
 <span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-18-output-2.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
 </div>
 <p>I also decided to look at the top 15 cities with the highest number of accidents and highest severity of accidents to see if there were any connections. Miami took the top spot for highest number of accidents which was followed by LA and Charlotte. There is an ongoing stereotype that Florida has the worst drivers, which makes me wonder if overall driver compentence or driver error could potentially play a role in this stat, whether its driver distractions or driving drunk. In terms of highest severity I noticed there were many Pennsylvania cities on this, compared to any other state, which makes me wonder if there is some overarching issue in Pennsylvania whether it’s their laws, infrastructure, or driver type that could be having an impact on the severity of accidents.</p>
-<div id="7c428daf" class="cell" data-execution_count="49">
+<div id="7c428daf" class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>])</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'year'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.year</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'month'</span>] <span class="op">=</span> traffic_df[<span class="st">'Start_Time'</span>].dt.month</span>
@@ -655,16 +594,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
 <span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
 <span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-19-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
 </div>
 <p>Looking at the accidents over time, the numbers seem pretty steady until around sometime in 2019 when the numbers seem to spike, before dropping again around early 2020, which coincides with the time of the major Covid-19 pandemic, indicating the pandemic could’ve caused a reduction in accidents for a period of time since most people were forced to stay home under lockdown restrictions. The numbers then increase by around late 2020 which could potentially be attributed to the trend of reckless driving after the pandemic due to less cars on the road, such as speeding, racing, not wearing seat belts, road rage, or driving under the influence, therefore increasing the overall number of accidents. From late 2022 to early 2023 there does seem to be a significant drop in the number of accidents. Overall there seems to be an increase in accidents compared from pre pandemic times to the post pandemic era which is interesting to see.</p>
-<div id="31022929" class="cell" data-execution_count="50">
+<div id="31022929" class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Start_Time'</span>] <span class="op">=</span> pd.to_datetime(traffic_df[<span class="st">'Start_Time'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>traffic_df <span class="op">=</span> traffic_df.dropna(subset<span class="op">=</span>[<span class="st">'Start_Time'</span>])</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>traffic_df[<span class="st">'Time Period'</span>] <span class="op">=</span> [<span class="st">'Pre-COVID'</span> <span class="cf">if</span> date <span class="op">&lt;</span> pd.Timestamp(<span class="st">'2020-03-01'</span>) <span class="cf">else</span> <span class="st">'Post-COVID'</span> <span class="cf">for</span> date <span class="kw">in</span> traffic_df[<span class="st">'Start_Time'</span>]]</span>
@@ -682,13 +614,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>plt.legend(title<span class="op">=</span><span class="st">'Time Period'</span>)</span>
 <span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
 <span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="final_proj_files/figure-html/cell-20-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
 </div>
 <p>Comparing this to the severity of accidents before and after the start of the Covid-19 pandemic, the more severe accidents happened before the pandemic, with there being a drop in severity after March 2020. This could potentially be attributed to multiple factors. With reduced traffic and vehicles on the road, the likelihood of severe multi vehicle collisions occurring may have decreased. During the pandemic essential trips were also much more common like driving to the local grocery store, which usually involves less exposure to freeways or high speed roads lowering the chances of severe accidents. There was also increased visibility and space on the roads with fewer vehicles which allowed drivers more room to navigate and maneuver, potentially avoiding and lowering high impact crashes. Even when lockdown restrictions were over there were many people who still followed a similar routine to protect themselves from Covid, as well as the many people who have continued to work from home which could’ve had an impact on overall accident severity for years after.</p>
 </section>
